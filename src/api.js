@@ -1,45 +1,50 @@
-const API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
+const API_URL = import.meta.env.VITE_API_URL;
+const API_KEY = import.meta.env.VITE_API_KEY;
+const MODEL = import.meta.env.VITE_MODEL;
 
-export async function askAI(message) {
+export async function askAI(chatHistory) {
   try {
-    const response = await fetch(
-      "https://openrouter.ai/api/v1/chat/completions",
-      {
-        method: "POST",
+    const response = await fetch(`${API_URL}/chat/completions`, {
+      method: "POST",
 
-        headers: {
-          Authorization: `Bearer ${API_KEY}`,
-          "Content-Type": "application/json",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${API_KEY}`,
+      },
 
-          // Optional but recommended by OpenRouter
-          "HTTP-Referer": "http://localhost:5173",
-          "X-Title": "Rayquaza AI",
-        },
+      body: JSON.stringify({
+        model: MODEL,
 
-        body: JSON.stringify({
-          model: "deepseek/deepseek-chat-v3-0324",
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are Rayquaza AI, a futuristic AI assistant inspired by the legendary sky guardian Rayquaza. Be intelligent, friendly, concise, and helpful.",
+          },
 
-          messages: [
-            {
-              role: "user",
-              content: message,
-            },
-          ],
-        }),
-      }
-    );
+          ...chatHistory,
+        ],
 
-    const data = await response.json();
+        max_tokens: 16384,
+      }),
+    });
 
-    console.log(data); // For debugging
+   const data = await response.json();
 
-    if (!response.ok) {
-      throw new Error(data.error?.message || "OpenRouter API Error");
+console.log("API Response:", data);
+console.log("Message:", data.choices[0].message);
+console.log("Content:", data.choices[0].message.content);
+
+if (!response.ok) {
+      throw new Error(
+        data?.error?.message ||
+          `HTTP ${response.status}: ${response.statusText}`
+      );
     }
 
-    return data.choices[0].message.content;
+    return data.choices?.[0]?.message?.content || "No response received.";
   } catch (error) {
-    console.error(error);
+    console.error("API Error:", error);
     throw error;
   }
 }

@@ -1,164 +1,151 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import { askAI } from "./api";
 
-import {
-  FaRobot,
-  FaUserCircle,
-  FaPaperPlane,
-  FaPlus,
-  FaPaperclip,
-  FaMicrophone,
-} from "react-icons/fa";
+import Sidebar from "./components/Sidebar";
+import Header from "./components/Header";
+import ChatArea from "./components/ChatArea";
+import InputBar from "./components/InputBar";
 
 function App() {
   const [input, setInput] = useState("");
 
   const [loading, setLoading] = useState(false);
 
-  const [messages, setMessages] = useState([
+  const defaultChat = [
+  {
+    sender: "ai",
+    text: "🐉 Greetings, Trainer. How may I assist you today?",
+  },
+];
+
+const [chats, setChats] = useState(() => {
+  const saved = localStorage.getItem("rayquaza-chats");
+
+  if (saved) return JSON.parse(saved);
+
+  return [
     {
-      sender: "ai",
-      text: "Hello 👋 How can I help you today?",
+      id: Date.now(),
+      title: "New Chat",
+      messages: defaultChat,
     },
-  ]);
+  ];
+});
 
-  const handleSend = async () => {
-    if (!input.trim() || loading) return;
+const [currentChatId, setCurrentChatId] = useState(chats[0].id);
 
-    const question = input;
+const messages =
+  chats.find(chat => chat.id === currentChatId)?.messages || defaultChat;
 
-    setMessages((prev) => [
-      ...prev,
-      {
-        sender: "user",
-        text: question,
-      },
-    ]);
+useEffect(() => {
+  localStorage.setItem(
+    "rayquaza-chats",
+    JSON.stringify(chats)
+  );
+}, [chats]);
 
-    setInput("");
+async function handleSend() {
+  if (!input.trim() || loading) return;
 
-    setLoading(true);
+  const question = input;
 
-    try {
-      const reply = await askAI(question);
+  const updatedMessages = [
+    ...messages,
+    {
+      sender: "user",
+      text: question,
+    },
+  ];
 
-      setMessages((prev) => [
-        ...prev,
+  setChats((prev) =>
+    prev.map((chat) =>
+      chat.id === currentChatId
+        ? { ...chat, messages: updatedMessages }
+        : chat
+    )
+  );
+
+  setInput("");
+  setLoading(true);
+
+  try {
+    const chatHistory = updatedMessages.map((msg) => ({
+      role: msg.sender === "user" ? "user" : "assistant",
+      content: msg.text,
+    }));
+
+    const reply = await askAI(chatHistory);
+
+    setChats((prev) =>
+  prev.map((chat) => {
+    if (chat.id !== currentChatId) return chat;
+
+    return {
+      ...chat,
+      title:
+        chat.title === "New Chat"
+          ? question.substring(0, 25)
+          : chat.title,
+      messages: [
+        ...updatedMessages,
         {
           sender: "ai",
           text: reply,
         },
-      ]);
-    } catch (err) {
-      console.error(err);
+      ],
+    };
+  })
+);
+  } catch (err) {
+    console.error(err);
 
-      setMessages((prev) => [
-        ...prev,
-        {
-          sender: "ai",
-          text: "❌ Failed to connect to OpenRouter.",
-        },
-      ]);
-    }
+    setChats((prev) =>
+      prev.map((chat) =>
+        chat.id === currentChatId
+          ? {
+              ...chat,
+              messages: [
+  ...updatedMessages,
+  {
+    sender: "ai",
+    text:
+      "⚠ Rayquaza couldn't connect to the AI server. Please try again.",
+  },
+],
+            }
+          : chat
+      )
+    );
+  }
 
-    setLoading(false);
-  };
+  setLoading(false);
+}
 
   return (
     <div className="container">
-      <aside className="sidebar">
-        <h2>🐉 Rayquaza AI</h2>
-
-        <button
-          className="new-chat"
-          onClick={() =>
-            setMessages([
-              {
-                sender: "ai",
-                text: "Hello 👋 How can I help you today?",
-              },
-            ])
-          }
-        >
-          <FaPlus />
-          New Chat
-        </button>
-
-        <div className="history">
-          <p>💬 AI Project</p>
-          <p>💬 College Work</p>
-          <p>💬 Random Chat</p>
-        </div>
-      </aside>
+      <Sidebar
+  chats={chats}
+  setChats={setChats}
+  currentChatId={currentChatId}
+  setCurrentChatId={setCurrentChatId}
+  defaultChat={defaultChat}
+/>
 
       <main className="main">
-        <header className="header">
-          <h1>Rayquaza AI</h1>
-          <p>Your Personal AI Assistant</p>
-        </header>
+        <Header />
 
-        <section className="chat-area">
-          {messages.map((msg, index) => (
-            <div
-              key={index}
-              className={`message ${msg.sender}`}
-            >
-              {msg.sender === "ai" && (
-                <div className="avatar">
-                  <FaRobot />
-                </div>
-              )}
+        <ChatArea
+          messages={messages}
+          loading={loading}
+        />
 
-              <div className="bubble">{msg.text}</div>
-
-              {msg.sender === "user" && (
-                <div className="avatar user-avatar">
-                  <FaUserCircle />
-                </div>
-              )}
-            </div>
-          ))}
-
-          {loading && (
-            <div className="message ai">
-              <div className="avatar">
-                <FaRobot />
-              </div>
-
-              <div className="bubble">
-                Thinking...
-              </div>
-            </div>
-          )}
-        </section>
-
-        <div className="input-area">
-          <button className="icon-btn">
-            <FaPaperclip />
-          </button>
-
-          <input
-            type="text"
-            value={input}
-            placeholder="Message Rayquaza AI..."
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") handleSend();
-            }}
-          />
-
-          <button className="icon-btn">
-            <FaMicrophone />
-          </button>
-
-          <button
-            className="send-btn"
-            onClick={handleSend}
-          >
-            <FaPaperPlane />
-          </button>
-        </div>
+        <InputBar
+          input={input}
+          setInput={setInput}
+          handleSend={handleSend}
+          loading={loading}
+        />
       </main>
     </div>
   );

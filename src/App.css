@@ -889,3 +889,34 @@ body{
     outline:none;
     font-size:16px;
 }
+.delete-chat{
+    width:34px;
+    height:34px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:none;
+    border:none;
+
+    border-radius:8px;
+
+    color:#8b949e;
+
+    cursor:pointer;
+
+    opacity:0;
+
+    transition:all .25s ease;
+}
+
+.chat-item:hover .delete-chat{
+    opacity:1;
+    color:#ff4d4f;
+    background:rgba(255,77,79,.12);
+}
+
+.delete-chat:hover{
+    transform:scale(1.08);
+}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaPlus, FaTimes, FaEdit } from "react-icons/fa";
+import { FaPlus, FaTimes, FaEdit, FaTrash } from "react-icons/fa";
 
 function Sidebar({
   chats,
@@ -31,6 +31,20 @@ const [newTitle, setNewTitle] = useState("");
     setEditingId(null);
     return;
   }
+  function deleteChat(chatId) {
+  if (chats.length === 1) {
+    alert("You must have at least one chat.");
+    return;
+  }
+
+  const updatedChats = chats.filter((chat) => chat.id !== chatId);
+
+  setChats(updatedChats);
+
+  if (currentChatId === chatId) {
+    setCurrentChatId(updatedChats[0].id);
+  }
+}
 
   setChats((prev) =>
     prev.map((chat) =>
@@ -131,6 +145,18 @@ const [newTitle, setNewTitle] = useState("");
   }}
 >
   <FaEdit />
+</button>
+<button
+  className="delete-chat"
+  onClick={(e) => {
+    e.stopPropagation();
+
+    if (window.confirm("Delete this chat?")) {
+      deleteChat(chat.id);
+    }
+  }}
+>
+  <FaTrash />
 </button>
 </div>
           ))}

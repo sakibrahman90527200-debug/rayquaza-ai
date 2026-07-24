@@ -13,9 +13,10 @@ function InputBar({
       </button>
 
       <input
+  className="chat-input"
         type="text"
         value={input}
-        placeholder="Message Rayquaza AI..."
+        placeholder="Ask Rayquaza anything..."
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === "Enter") handleSend();

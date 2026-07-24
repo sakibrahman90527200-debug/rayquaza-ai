@@ -155,4 +155,7 @@
     font-size: 12px;
     text-align: left;
 }
+body{
+    padding-top: env(safe-area-inset-top);
+}
 }

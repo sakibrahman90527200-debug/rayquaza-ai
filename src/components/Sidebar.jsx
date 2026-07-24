@@ -37,7 +37,21 @@ function Sidebar({
         className={`sidebar ${sidebarOpen ? "open" : ""}`}
       >
         <div className="sidebar-top">
-          <h2>🐉 Rayquaza AI</h2>
+          <div className="sidebar-brand">
+
+    <div className="brand-logo">
+        🐉
+    </div>
+
+    <div>
+
+        <h2>Rayquaza AI</h2>
+
+        <p>AI Assistant</p>
+
+    </div>
+
+</div>
 
           <button
             className="close-btn"

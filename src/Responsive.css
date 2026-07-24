@@ -60,3 +60,40 @@
     color: #8b949e;
     font-size: 14px;
 }
+/* ===========================
+   SIDEBAR BRAND
+=========================== */
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.brand-logo {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 30px;
+
+    background: linear-gradient(135deg, #00d4aa, #48f2d4);
+
+    border-radius: 14px;
+
+    box-shadow: 0 0 20px rgba(0,212,170,.35);
+}
+
+.sidebar-brand h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.sidebar-brand p {
+    margin-top: 4px;
+    color: #8b949e;
+    font-size: 13px;
+}

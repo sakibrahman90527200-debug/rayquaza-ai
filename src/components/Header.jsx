@@ -25,9 +25,11 @@ function Header() {
 
             </div>
 
-           <p className="powered">
-    Powered by <span className="team-name">Team Arceus</span>
-</p>
+     <div className="header-bottom">
+    <p className="powered">
+        Powered by <span className="team-name">Team Arceus</span>
+    </p>
+</div>
 
         </header>
     );

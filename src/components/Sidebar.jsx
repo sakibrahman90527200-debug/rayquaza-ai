@@ -26,6 +26,22 @@ const [newTitle, setNewTitle] = useState("");
       setSidebarOpen(false);
     }
   }
+  function saveTitle(chatId) {
+  if (!newTitle.trim()) {
+    setEditingId(null);
+    return;
+  }
+
+  setChats((prev) =>
+    prev.map((chat) =>
+      chat.id === chatId
+        ? { ...chat, title: newTitle.trim() }
+        : chat
+    )
+  );
+
+  setEditingId(null);
+}
 
   return (
     <>
@@ -82,11 +98,16 @@ const [newTitle, setNewTitle] = useState("");
 >
  {editingId === chat.id ? (
   <input
-    className="rename-input"
-    value={newTitle}
-    onChange={(e) => setNewTitle(e.target.value)}
-    autoFocus
-  />
+  className="rename-input"
+  value={newTitle}
+  onChange={(e) => setNewTitle(e.target.value)}
+  onKeyDown={(e) => {
+    if (e.key === "Enter") {
+      saveTitle(chat.id);
+    }
+  }}
+  autoFocus
+/>
 ) : (
   <p
     onClick={() => {

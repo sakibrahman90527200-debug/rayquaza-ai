@@ -97,3 +97,29 @@
     color: #8b949e;
     font-size: 13px;
 }
+/* ===========================
+   MOBILE RESPONSIVE
+=========================== */
+
+@media (max-width: 768px){
+    .header{
+    padding: 14px 16px;
+}
+
+.logo{
+    font-size: 28px;
+}
+
+.title-area h1{
+    font-size: 22px;
+}
+
+.title-area p{
+    font-size: 12px;
+}
+
+.powered{
+    font-size: 12px;
+}
+
+}

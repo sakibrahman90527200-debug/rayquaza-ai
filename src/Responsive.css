@@ -145,9 +145,14 @@
     margin-top: 6px;
 }
 
+.header-bottom{
+    display: flex;
+    justify-content: flex-start;
+}
+
 .powered{
-    margin-left: 60px;
-    margin-top: 4px;
+    margin: 6px 0 0 60px;
     font-size: 12px;
+    text-align: left;
 }
 }

@@ -965,3 +965,13 @@ body{
 .delete-chat:hover{
     transform:scale(1.08);
 }
+.team-name{
+    color: #1fd3c9;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.team-name:hover{
+    color: #36f0e5;
+    text-shadow: 0 0 8px rgba(31,211,201,.6);
+}

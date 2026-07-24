@@ -25,9 +25,9 @@ function Header() {
 
             </div>
 
-            <p className="powered">
-                Powered by OpenRouter
-            </p>
+           <p className="powered">
+    Powered by <span className="team-name">Team Arceus</span>
+</p>
 
         </header>
     );

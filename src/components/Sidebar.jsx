@@ -1,4 +1,5 @@
-import { FaPlus, FaTimes } from "react-icons/fa";
+import { useState } from "react";
+import { FaPlus, FaTimes, FaEdit } from "react-icons/fa";
 
 function Sidebar({
   chats,
@@ -9,6 +10,8 @@ function Sidebar({
   sidebarOpen,
   setSidebarOpen,
 }) {
+  const [editingId, setEditingId] = useState(null);
+const [newTitle, setNewTitle] = useState("");
   function createNewChat() {
     const newChat = {
       id: Date.now(),
@@ -71,21 +74,44 @@ function Sidebar({
 
         <div className="history">
           {chats.map((chat) => (
-            <p
-              key={chat.id}
-              onClick={() => {
-                setCurrentChatId(chat.id);
+            <div
+  key={chat.id}
+  className={`chat-item ${
+    currentChatId === chat.id ? "active-chat" : ""
+  }`}
+>
+ {editingId === chat.id ? (
+  <input
+    className="rename-input"
+    value={newTitle}
+    onChange={(e) => setNewTitle(e.target.value)}
+    autoFocus
+  />
+) : (
+  <p
+    onClick={() => {
+      setCurrentChatId(chat.id);
 
-                if (window.innerWidth < 768) {
-                  setSidebarOpen(false);
-                }
-              }}
-              className={
-                currentChatId === chat.id ? "active-chat" : ""
-              }
-            >
-              💬 {chat.title}
-            </p>
+      if (window.innerWidth < 768) {
+        setSidebarOpen(false);
+      }
+    }}
+  >
+    💬 {chat.title}
+  </p>
+)}
+
+ <button
+  className="edit-chat"
+  onClick={(e) => {
+    e.stopPropagation();
+    setEditingId(chat.id);
+    setNewTitle(chat.title);
+  }}
+>
+  <FaEdit />
+</button>
+</div>
           ))}
         </div>
       </aside>

@@ -834,3 +834,58 @@ body{
 .sidebar-overlay{
     display:none;
 }
+
+.chat-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    margin-bottom:12px;
+}
+
+.chat-item p{
+    flex:1;
+    margin:0;
+}
+
+.edit-chat{
+    width:34px;
+    height:34px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:none;
+    border:none;
+
+    border-radius:8px;
+
+    color:#8b949e;
+
+    cursor:pointer;
+
+    opacity:0;
+
+    transition:all .25s ease;
+}
+
+.chat-item:hover .edit-chat{
+    opacity:1;
+    color:#00d4aa;
+    background:rgba(0,212,170,.12);
+}
+
+.edit-chat:hover{
+    transform:scale(1.08);
+}
+.rename-input{
+    flex:1;
+    padding:8px 10px;
+    border:1px solid #00d4aa;
+    border-radius:8px;
+    background:#1f2430;
+    color:white;
+    outline:none;
+    font-size:16px;
+}

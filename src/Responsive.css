@@ -121,5 +121,20 @@
 .powered{
     font-size: 12px;
 }
+.header-top{
+    align-items: flex-start;
+}
 
+.header-left{
+    gap: 10px;
+}
+
+.status{
+    padding: 6px 12px;
+    font-size: 14px;
+}
+
+.logo{
+    font-size: 24px;
+}
 }

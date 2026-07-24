@@ -84,10 +84,12 @@ async function handleSend() {
 
     return {
       ...chat,
-      title:
-        chat.title === "New Chat"
-          ? question.substring(0, 25)
-          : chat.title,
+     title:
+  chat.title === "New Chat"
+    ? question.trim().length > 30
+      ? question.trim().substring(0, 30) + "..."
+      : question.trim()
+    : chat.title,
       messages: [
         ...updatedMessages,
         {

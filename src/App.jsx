@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+import "./Responsive.css";
 import { askAI } from "./api";
 
 import Sidebar from "./components/Sidebar";

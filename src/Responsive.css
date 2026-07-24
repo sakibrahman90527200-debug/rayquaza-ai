@@ -1,0 +1,62 @@
+/* ===========================
+   HEADER V2
+=========================== */
+
+.header {
+    background: #161b22;
+    padding: 18px 28px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo {
+    font-size: 40px;
+}
+
+.title-area h1 {
+    margin: 0;
+    font-size: 34px;
+}
+
+.title-area p {
+    margin-top: 4px;
+    color: #9ca3af;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    background: rgba(0,212,170,.12);
+
+    padding: 8px 14px;
+
+    border-radius: 30px;
+}
+
+.online-dot {
+    width: 10px;
+    height: 10px;
+
+    background: #00d26a;
+
+    border-radius: 50%;
+}
+
+.powered {
+    margin-top: 12px;
+    color: #8b949e;
+    font-size: 14px;
+}

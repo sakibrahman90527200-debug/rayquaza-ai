@@ -1,4 +1,4 @@
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaTimes } from "react-icons/fa";
 
 function Sidebar({
   chats,
@@ -6,6 +6,8 @@ function Sidebar({
   currentChatId,
   setCurrentChatId,
   defaultChat,
+  sidebarOpen,
+  setSidebarOpen,
 }) {
   function createNewChat() {
     const newChat = {
@@ -15,38 +17,65 @@ function Sidebar({
     };
 
     setChats((prev) => [...prev, newChat]);
-
     setCurrentChatId(newChat.id);
+
+    if (window.innerWidth < 768) {
+      setSidebarOpen(false);
+    }
   }
 
   return (
-    <aside className="sidebar">
-      <h2>🐉 Rayquaza AI</h2>
+    <>
+      {sidebarOpen && (
+        <div
+          className="sidebar-overlay"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
-      <button
-        className="new-chat"
-        onClick={createNewChat}
+      <aside
+        className={`sidebar ${sidebarOpen ? "open" : ""}`}
       >
-        <FaPlus />
-        New Chat
-      </button>
+        <div className="sidebar-top">
+          <h2>🐉 Rayquaza AI</h2>
 
-      <div className="history">
-        {chats.map((chat) => (
-          <p
-            key={chat.id}
-            onClick={() => setCurrentChatId(chat.id)}
-            style={{
-              cursor: "pointer",
-              fontWeight:
-                currentChatId === chat.id ? "bold" : "normal",
-            }}
+          <button
+            className="close-btn"
+            onClick={() => setSidebarOpen(false)}
           >
-            💬 {chat.title}
-          </p>
-        ))}
-      </div>
-    </aside>
+            <FaTimes />
+          </button>
+        </div>
+
+        <button
+          className="new-chat"
+          onClick={createNewChat}
+        >
+          <FaPlus />
+          New Chat
+        </button>
+
+        <div className="history">
+          {chats.map((chat) => (
+            <p
+              key={chat.id}
+              onClick={() => {
+                setCurrentChatId(chat.id);
+
+                if (window.innerWidth < 768) {
+                  setSidebarOpen(false);
+                }
+              }}
+              className={
+                currentChatId === chat.id ? "active-chat" : ""
+              }
+            >
+              💬 {chat.title}
+            </p>
+          ))}
+        </div>
+      </aside>
+    </>
   );
 }
 

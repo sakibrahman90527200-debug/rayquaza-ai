@@ -31,20 +31,7 @@ const [newTitle, setNewTitle] = useState("");
     setEditingId(null);
     return;
   }
-  function deleteChat(chatId) {
-  if (chats.length === 1) {
-    alert("You must have at least one chat.");
-    return;
-  }
 
-  const updatedChats = chats.filter((chat) => chat.id !== chatId);
-
-  setChats(updatedChats);
-
-  if (currentChatId === chatId) {
-    setCurrentChatId(updatedChats[0].id);
-  }
-}
 
   setChats((prev) =>
     prev.map((chat) =>
@@ -56,7 +43,23 @@ const [newTitle, setNewTitle] = useState("");
 
   setEditingId(null);
 }
+function deleteChat(chatId) {
+  if (chats.length === 1) {
+    alert("You must have at least one chat.");
+    return;
+  }
 
+  const updatedChats = chats.filter((chat) => chat.id !== chatId);
+
+ console.log("Before:", chats);
+console.log("After:", updatedChats);
+
+setChats(updatedChats);
+
+  if (currentChatId === chatId) {
+    setCurrentChatId(updatedChats[0].id);
+  }
+}
   return (
     <>
       {sidebarOpen && (
